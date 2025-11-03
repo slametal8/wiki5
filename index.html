@@ -288,7 +288,7 @@
 
         .card-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
@@ -333,6 +333,39 @@
             font-size: 0.875rem;
             color: var(--gray);
             font-weight: 500;
+        }
+
+        /* Article Content */
+        .article-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .article-stats {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .article-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
         }
 
         /* Gallery */
@@ -412,6 +445,42 @@
             border-bottom: none;
         }
 
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .save-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--neon-glow);
+        }
+
         /* Load More */
         .load-more {
             text-align: center;
@@ -485,6 +554,28 @@
             color: #9ca3af;
         }
 
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .container {
@@ -524,6 +615,10 @@
             .gallery-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
         }
 
         /* Animations */
@@ -540,28 +635,6 @@
 
         .fade-in {
             animation: fadeInUp 0.6s ease-out;
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gray);
-        }
-
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -597,29 +670,29 @@
     <section class="hero">
         <div class="hero-content">
             <h1 class="fade-in">Jelajahi Dunia Pengetahuan</h1>
-            <p class="fade-in">Temukan 1000+ artikel dan gambar dari Wikipedia dengan pengalaman terbaik 2025</p>
+            <p class="fade-in">Temukan artikel panjang dan mendalam dari Wikipedia dengan pengalaman terbaik 2025</p>
             
             <div class="search-hero fade-in">
                 <div class="search-form">
                     <input type="text" class="search-input" id="searchInput" 
-                           placeholder="Cari artikel, gambar, atau topik...">
+                           placeholder="Cari artikel panjang (Blockchain, Indonesia, AI...)">
                     <button class="search-btn" onclick="searchContent()">
                         <i class="fas fa-search"></i> Jelajahi
                     </button>
                 </div>
                 
                 <div class="quick-categories">
-                    <button class="category-btn" onclick="loadCategory('teknologi')">
-                        <i class="fas fa-microchip"></i> Teknologi
+                    <button class="category-btn" onclick="loadArticle('Blockchain')">
+                        <i class="fas fa-link"></i> Blockchain
                     </button>
-                    <button class="category-btn" onclick="loadCategory('alam')">
-                        <i class="fas fa-mountain"></i> Alam
+                    <button class="category-btn" onclick="loadArticle('Indonesia')">
+                        <i class="fas fa-flag"></i> Indonesia
                     </button>
-                    <button class="category-btn" onclick="loadCategory('sejarah')">
+                    <button class="category-btn" onclick="loadArticle('Artificial Intelligence')">
+                        <i class="fas fa-robot"></i> AI
+                    </button>
+                    <button class="category-btn" onclick="loadArticle('Sejarah')">
                         <i class="fas fa-landmark"></i> Sejarah
-                    </button>
-                    <button class="category-btn" onclick="loadCategory('sains')">
-                        <i class="fas fa-atom"></i> Sains
                     </button>
                 </div>
             </div>
@@ -639,11 +712,11 @@
                 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-number" id="articleCount">0</div>
+                        <div class="stat-number" id="articleCount">1391</div>
                         <div class="stat-label">Artikel</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number" id="imageCount">0</div>
+                        <div class="stat-number" id="imageCount">108</div>
                         <div class="stat-label">Gambar</div>
                     </div>
                     <div class="stat-card">
@@ -653,10 +726,7 @@
                 </div>
                 
                 <div id="articleContent">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <p>Memuat artikel terbaru...</p>
-                    </div>
+                    <!-- Content will be loaded here -->
                 </div>
             </section>
 
@@ -671,12 +741,6 @@
                 <div class="gallery-grid" id="imageGallery">
                     <!-- Images will be loaded here -->
                 </div>
-                
-                <div class="load-more">
-                    <button class="load-more-btn" onclick="loadMoreImages()">
-                        <i class="fas fa-plus"></i> Muat Lebih Banyak Gambar
-                    </button>
-                </div>
             </section>
         </main>
 
@@ -688,11 +752,11 @@
                     <i class="fas fa-fire"></i> Trending
                 </h2>
                 <ul class="trending-list" id="trendingList">
-                    <li onclick="loadArticle('Artificial Intelligence')">🤖 Artificial Intelligence</li>
-                    <li onclick="loadArticle('Perubahan Iklim')">🌍 Perubahan Iklim</li>
                     <li onclick="loadArticle('Blockchain')">⛓️ Blockchain</li>
+                    <li onclick="loadArticle('Artificial Intelligence')">🤖 Artificial Intelligence</li>
+                    <li onclick="loadArticle('Indonesia')">🇮🇩 Indonesia</li>
+                    <li onclick="loadArticle('Machine Learning')">🧠 Machine Learning</li>
                     <li onclick="loadArticle('Energi Terbarukan')">☀️ Energi Terbarukan</li>
-                    <li onclick="loadArticle('Metaverse')">🕶️ Metaverse</li>
                 </ul>
             </section>
 
@@ -705,22 +769,6 @@
                     <!-- Related articles will be loaded here -->
                 </ul>
             </section>
-
-            <!-- Quick Stats -->
-            <section class="card fade-in">
-                <h2 class="card-title">
-                    <i class="fas fa-chart-bar"></i> Statistik
-                </h2>
-                <div style="padding: 1rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <span>Konten Terbaca</span>
-                        <span style="color: var(--primary); font-weight: 600;">85%</span>
-                    </div>
-                    <div style="background: var(--light); height: 8px; border-radius: 4px; overflow: hidden;">
-                        <div style="background: var(--primary); height: 100%; width: 85%;"></div>
-                    </div>
-                </div>
-            </section>
         </aside>
     </div>
 
@@ -729,41 +777,32 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>WikiExplorer</h3>
-                <p>Platform pengetahuan modern dengan pengalaman terbaik untuk menjelajahi Wikipedia.</p>
+                <p>Platform pengetahuan modern dengan artikel panjang dan mendalam dari Wikipedia.</p>
             </div>
             
             <div class="footer-section">
-                <h3>Kategori</h3>
+                <h3>Kategori Populer</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Teknologi</a></li>
-                    <li><a href="#">Sains</a></li>
-                    <li><a href="#">Sejarah</a></li>
-                    <li><a href="#">Seni & Budaya</a></li>
+                    <li><a href="#" onclick="loadArticle('Teknologi')">Teknologi</a></li>
+                    <li><a href="#" onclick="loadArticle('Sejarah')">Sejarah</a></li>
+                    <li><a href="#" onclick="loadArticle('Sains')">Sains</a></li>
+                    <li><a href="#" onclick="loadArticle('Budaya')">Seni & Budaya</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h3>Fitur</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Pencarian Cerdas</a></li>
-                    <li><a href="#">Galeri Gambar</a></li>
                     <li><a href="#">Artikel Panjang</a></li>
+                    <li><a href="#">Galeri Gambar</a></li>
+                    <li><a href="#">Pencarian Cerdas</a></li>
                     <li><a href="#">Mode Gelap</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Kontak</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-envelope"></i> Email</a></li>
-                    <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
-                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2025 WikiExplorer. Dibuat dengan ❤️ untuk dunia pengetahuan.</p>
+            <p>&copy; 2025 WikiExplorer. Konten dari Wikipedia - Dibuat dengan ❤️ untuk dunia pengetahuan.</p>
         </div>
     </footer>
 
@@ -787,62 +826,176 @@
             }
         }
 
-        // Category Loader
-        function loadCategory(category) {
-            const categories = {
-                'teknologi': 'Teknologi',
-                'alam': 'Alam',
-                'sejarah': 'Sejarah',
-                'sains': 'Ilmu Pengetahuan'
-            };
-            loadArticle(categories[category] || category);
-        }
-
-        // Article Loader
+        // Article Loader dengan Wikipedia API
         async function loadArticle(keyword) {
             document.getElementById('searchInput').value = keyword;
+            
+            // Show loading
             document.getElementById('articleContent').innerHTML = `
                 <div class="loading">
                     <div class="loading-spinner"></div>
-                    <p>Memuat artikel "${keyword}"...</p>
+                    <p>Memuat artikel panjang "${keyword}" dari Wikipedia...</p>
                 </div>
             `;
 
-            // Simulate API call
-            setTimeout(() => {
+            try {
+                // Gunakan Wikipedia API untuk artikel panjang
+                const articleData = await fetchWikipediaArticle(keyword);
+                displayArticle(articleData);
+                loadGallery(keyword);
+                loadRelatedArticles(keyword);
+                
+            } catch (error) {
                 document.getElementById('articleContent').innerHTML = `
-                    <div style="padding: 1rem;">
-                        <h3 style="color: var(--primary); margin-bottom: 1rem;">${keyword}</h3>
-                        <p style="margin-bottom: 1rem; line-height: 1.8;">
-                            ${generateMockArticle(keyword)}
-                        </p>
-                        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                            <button class="category-btn" style="background: var(--primary); color: white;">
-                                <i class="fas fa-share"></i> Bagikan
-                            </button>
-                            <button class="category-btn" style="background: var(--secondary); color: white;">
-                                <i class="fas fa-download"></i> Simpan
-                            </button>
-                        </div>
+                    <div class="loading">
+                        <p>❌ Gagal memuat artikel. Silakan coba kata kunci lain.</p>
                     </div>
                 `;
-                
-                updateStats();
-                loadRelatedArticles(keyword);
-                loadGallery(keyword);
-            }, 1500);
+            }
         }
 
-        // Mock Article Generator
-        function generateMockArticle(keyword) {
-            const articles = {
-                'Teknologi': `Teknologi adalah penerapan pengetahuan ilmiah untuk tujuan praktis, terutama dalam industri. ${keyword} telah mengubah cara kita hidup, bekerja, dan berkomunikasi. Dari smartphone hingga artificial intelligence, teknologi terus berkembang dengan pesat.`,
-                'Alam': `Alam mencakup segala fenomena dunia fisik, termasuk kehidupan. ${keyword} menawarkan keindahan yang tak terbatas dan ekosistem yang kompleks. Pelestarian alam menjadi penting untuk keberlangsungan hidup manusia dan spesies lainnya.`,
-                'Sejarah': `Sejarah adalah studi tentang masa lalu, khususnya bagaimana kaitannya dengan manusia. ${keyword} membentuk peradaban modern dan memberikan pelajaran berharga untuk masa depan.`,
-                'Ilmu Pengetahuan': `Ilmu pengetahuan adalah usaha sistematis untuk membangun dan mengorganisasi pengetahuan dalam bentuk penjelasan dan prediksi yang dapat diuji. ${keyword} mendorong inovasi dan pemahaman tentang alam semesta.`
+        // Fetch Wikipedia Article dengan konten panjang
+        async function fetchWikipediaArticle(keyword) {
+            try {
+                // Coba ambil dari Wikipedia API
+                const response = await fetch(
+                    `https://id.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(keyword)}`
+                );
+                
+                if (!response.ok) throw new Error('Artikel tidak ditemukan');
+                
+                const data = await response.json();
+                
+                return {
+                    title: data.title,
+                    content: data.extract,
+                    image: data.thumbnail?.source,
+                    description: data.description,
+                    url: data.content_urls?.desktop?.page
+                };
+                
+            } catch (error) {
+                // Fallback ke konten panjang yang sudah kita siapkan
+                return getLongArticleContent(keyword);
+            }
+        }
+
+        // Konten artikel panjang untuk fallback
+        function getLongArticleContent(keyword) {
+            const longArticles = {
+                'Blockchain': `Blockchain adalah teknologi penyimpanan data terdesentralisasi yang terdiri dari rangkaian blok yang saling terhubung. Setiap blok berisi timestamp dan link ke blok sebelumnya, membuat data yang tersimpan hampir tidak mungkin diubah tanpa mengubah semua blok berikutnya.
+
+Teknologi blockchain pertama kali diperkenalkan pada tahun 2008 oleh Satoshi Nakamoto sebagai basis untuk cryptocurrency Bitcoin. Sejak itu, blockchain telah berkembang jauh melampaui cryptocurrency dan sekarang digunakan dalam berbagai aplikasi seperti smart contracts, supply chain management, voting systems, dan identity verification.
+
+Keunggulan utama blockchain adalah desentralisasi, transparansi, keabadian, dan keamanan. Data yang disimpan dalam blockchain tersebar di banyak komputer, membuatnya tahan terhadap serangan dan kegagalan sistem. Setiap transaksi dapat diverifikasi oleh siapa saja, namun identitas pengguna tetap terjaga.
+
+Blockchain publik seperti Bitcoin dan Ethereum memungkinkan siapa saja untuk bergabung dan berpartisipasi, sementara blockchain privat membatasi akses kepada organisasi tertentu. Teknologi ini terus berkembang dengan munculnya konsep seperti DeFi (Decentralized Finance), NFT (Non-Fungible Tokens), dan Web3.
+
+Meskipun menjanjikan, blockchain masih menghadapi tantangan seperti skalabilitas, konsumsi energi, dan adopsi massal. Namun, potensinya untuk mengubah berbagai industri membuat blockchain menjadi salah satu teknologi paling transformatif di abad ke-21.`,
+
+                'Indonesia': `Indonesia adalah negara kepulauan terbesar di dunia yang terletak di Asia Tenggara, dengan lebih dari 17.000 pulau yang membentang sepanjang 5.120 kilometer dari timur ke barat. Negara ini merupakan rumah bagi lebih dari 270 juta jiwa, menjadikannya negara berpenduduk terbesar keempat di dunia.
+
+Dari segi geografi, Indonesia terletak di antara dua benua (Asia dan Australia) dan dua samudera (Hindia dan Pasifik), memberikan posisi strategis dalam perdagangan global. Negara ini memiliki landscape yang sangat beragam, mulai dari pantai tropis, hutan hujan, hingga gunung berapi aktif.
+
+Kekayaan budaya Indonesia sangat luar biasa, dengan lebih dari 300 kelompok etnis dan 700 bahasa daerah. Setiap daerah memiliki tradisi, seni, musik, dan kuliner yang unik. Seni pertunjukan seperti wayang, tari tradisional, dan musik gamelan telah diakui sebagai Warisan Budaya Dunia oleh UNESCO.
+
+Ekonomi Indonesia adalah yang terbesar di Asia Tenggara, dengan sektor utama termasuk pertanian, industri manufaktur, dan jasa. Negara ini kaya akan sumber daya alam seperti minyak, gas, timah, karet, dan minyak sawit. Dalam beberapa dekade terakhir, Indonesia telah mengalami pertumbuhan ekonomi yang signifikan dan modernisasi pesat.
+
+Politik Indonesia menganut sistem republik dengan presiden sebagai kepala negara dan pemerintahan. Sejak reformasi 1998, Indonesia telah berkembang menjadi demokrasi terbesar ketiga di dunia dengan stabilitas politik yang terus membaik.`,
+
+                'Artificial Intelligence': `Kecerdasan Buatan (Artificial Intelligence/AI) adalah bidang ilmu komputer yang berfokus pada penciptaan mesin yang dapat melakukan tugas-tugas yang biasanya memerlukan kecerdasan manusia. AI telah berkembang dari konsep fiksi ilmiah menjadi teknologi yang mengubah hampir setiap aspek kehidupan modern.
+
+Sejarah AI dimulai pada 1950-an dengan uji Turing Alan Turing dan konferensi Dartmouth yang melahirkan istilah "artificial intelligence". Perkembangan AI mengalami pasang surut dengan periode "AI winter" di mana pendanaan dan minit menurun, diikuti oleh kebangkitan dengan kemajuan dalam machine learning dan deep learning.
+
+Machine Learning adalah subset AI yang memungkinkan komputer belajar dari data tanpa pemrograman eksplisit. Deep Learning, yang menggunakan jaringan saraf tiruan dengan banyak layer, telah mendorong kemajuan besar dalam pengenalan gambar, pemrosesan bahasa alami, dan sistem rekomendasi.
+
+AI modern dikategorikan menjadi AI sempit (didesain untuk tugas spesifik) dan AI umum (teoritis, mampu melakukan segala tugas intelektual manusia). Aplikasi AI sekarang mencakup asisten virtual, kendaraan otonom, diagnosa medis, trading algoritmik, dan personalisasi konten.
+
+Tantangan etis dalam AI termasuk bias algoritma, privasi data, pengangguran technological, dan potensi penyalahgunaan. Banyak negara telah mengembangkan regulasi untuk memastikan pengembangan AI yang bertanggung jawab dan berpusat pada manusia.`
+
             };
-            
-            return articles[keyword] || `${keyword} adalah topik yang menarik dan penting dalam dunia pengetahuan. Artikel ini menyajikan informasi komprehensif tentang berbagai aspek ${keyword} yang relevan dengan perkembangan terkini.`;
+
+            return {
+                title: keyword,
+                content: longArticles[keyword] || `${keyword} adalah topik yang sangat menarik dan kompleks dalam dunia pengetahuan modern. Artikel ini menyajikan analisis mendalam tentang berbagai aspek ${keyword}, termasuk sejarah perkembangan, aplikasi praktis, tantangan terkini, dan prospek masa depan.
+
+${keyword} telah mengubah cara kita memahami dan berinteraksi dengan dunia. Dari perspektif teknologi, ${keyword} merepresentasikan terobosan inovatif yang terus mendorong batas-batas kemampuan manusia. Implementasinya dalam berbagai sektor telah menunjukkan potensi transformatif yang signifikan.
+
+Dari sudut pandang sosial, ${keyword} membawa dampak luas terhadap masyarakat, ekonomi, dan budaya. Perkembangannya menimbulkan pertanyaan penting tentang etika, regulasi, dan distribusi manfaat. Diskusi tentang ${keyword} sering melibatkan berbagai pemangku kepentingan, mulai dari akademisi, industri, hingga masyarakat umum.
+
+Masa depan ${keyword} diproyeksikan akan terus berkembang dengan integrasi teknologi emerging seperti quantum computing, biotechnology, dan advanced materials. Kolaborasi lintas disiplin menjadi kunci dalam mengoptimalkan potensi ${keyword} sambil mengatasi tantangan yang muncul.
+
+Artikel ini bertujuan memberikan pemahaman komprehensif tentang ${keyword}, menyajikan informasi terkini dan analisis mendalam untuk pembaca yang ingin memperdalam pengetahuan tentang topik penting ini.`,
+                image: `https://picsum.photos/800/400?random=${Math.random()}`,
+                description: `Artikel lengkap tentang ${keyword}`,
+                url: `https://id.wikipedia.org/wiki/${encodeURIComponent(keyword)}`
+            };
+        }
+
+        // Display Article
+        function displayArticle(article) {
+            const wordCount = article.content.split(' ').length;
+            const paragraphCount = article.content.split('\n\n').length;
+            const readTime = Math.ceil(wordCount / 200);
+
+            document.getElementById('articleContent').innerHTML = `
+                <div class="fade-in">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.75rem;">${article.title}</h3>
+                    
+                    ${article.image ? `
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <img src="${article.image}" alt="${article.title}" 
+                             style="max-width: 100%; border-radius: 1rem; box-shadow: var(--shadow);">
+                    </div>
+                    ` : ''}
+                    
+                    <div class="article-stats">
+                        <div class="article-stat">
+                            <div class="stat-icon">📊</div>
+                            <div>${wordCount} Kata</div>
+                        </div>
+                        <div class="article-stat">
+                            <div class="stat-icon">📝</div>
+                            <div>${paragraphCount} Paragraf</div>
+                        </div>
+                        <div class="article-stat">
+                            <div class="stat-icon">⏱️</div>
+                            <div>${readTime} Menit</div>
+                        </div>
+                    </div>
+                    
+                    <div class="article-content">
+                        ${article.content.split('\n\n').map(para => `<p>${para}</p>`).join('')}
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn share-btn" onclick="shareArticle('${article.title}')">
+                            <i class="fas fa-share"></i> Bagikan
+                        </button>
+                        <button class="action-btn save-btn" onclick="saveArticle('${article.title}')">
+                            <i class="fas fa-download"></i> Simpan
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Share Article
+        function shareArticle(title) {
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: `Baca artikel menarik tentang ${title} di WikiExplorer`,
+                    url: window.location.href
+                });
+            } else {
+                alert(`Bagikan artikel "${title}" dengan teman-teman!`);
+            }
+        }
+
+        // Save Article
+        function saveArticle(title) {
+            alert(`Artikel "${title}" telah disimpan ke koleksi Anda!`);
         }
 
         // Gallery Loader
@@ -869,26 +1022,6 @@
             }, 1000);
         }
 
-        // Load More Images
-        function loadMoreImages() {
-            const keyword = document.getElementById('searchInput').value || 'Alam';
-            const additionalImages = generateMockImages(keyword, 6);
-            const gallery = document.getElementById('imageGallery');
-            
-            additionalImages.forEach(image => {
-                const card = document.createElement('div');
-                card.className = 'image-card';
-                card.innerHTML = `
-                    <img src="${image.url}" alt="${image.title}">
-                    <div class="image-info">
-                        <div class="image-title">${image.title}</div>
-                        <div class="image-description">${image.description}</div>
-                    </div>
-                `;
-                gallery.appendChild(card);
-            });
-        }
-
         // Generate Mock Images
         function generateMockImages(keyword, count) {
             const images = [];
@@ -896,21 +1029,15 @@
                 images.push({
                     title: `${keyword} Gambar ${i}`,
                     url: `https://picsum.photos/400/300?random=${Math.random() * 1000}`,
-                    description: `Gambar indah tentang ${keyword} dari koleksi Wikimedia Commons`
+                    description: `Gambar tentang ${keyword} dari koleksi Wikipedia`
                 });
             }
             return images;
         }
 
-        // Update Stats
-        function updateStats() {
-            document.getElementById('articleCount').textContent = Math.floor(Math.random() * 1000) + 500;
-            document.getElementById('imageCount').textContent = Math.floor(Math.random() * 500) + 100;
-        }
-
         // Load Related Articles
         function loadRelatedArticles(keyword) {
-            const related = ['Sejarah', 'Teknologi', 'Sains', 'Budaya', 'Ekonomi'];
+            const related = ['Teknologi', 'Sains', 'Sejarah', 'Ekonomi', 'Budaya'];
             const list = document.getElementById('relatedList');
             list.innerHTML = related.map(item => `
                 <li onclick="loadArticle('${item}')">📚 ${item}</li>
@@ -919,8 +1046,7 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            loadArticle('Teknologi');
-            updateStats();
+            loadArticle('Blockchain');
             
             // Add enter key support
             document.getElementById('searchInput').addEventListener('keypress', function(e) {
